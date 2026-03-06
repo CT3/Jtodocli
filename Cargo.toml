@@ -1,0 +1,18 @@
+[package]
+name = "jtodo"
+version = "0.1.0"
+edition = "2024"
+description = "A simple terminal todo app with CLI and TUI, using markdown for storage"
+license = "MIT"
+repository = "https://github.com/CT3/Jtodocli"
+readme = "README.md"
+keywords = ["todo", "cli", "tui", "markdown", "productivity"]
+categories = ["command-line-utilities"]
+
+[dependencies]
+clap = { version = "4.5.60", features = ["derive"] }
+crossterm = "0.29.0"
+dirs = "6.0.0"
+ratatui = "0.30.0"
+serde = { version = "1.0.228", features = ["derive"] }
+toml = "1.0.4"

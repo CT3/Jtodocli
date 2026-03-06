@@ -1,0 +1,13 @@
+- [ ] Install the security camera
+- [ ] Return Tado thermostat
+- [ ] sokiu batai
+- [ ] samba share home
+- [ ] buy ultravwide monitor
+- [ ] buy office chair
+- [ ] motocilo footpegs
+- [ ] nauja pusis
+- [ ] garazo lentynas sudeti
+- [ ] pagaminti motociklo keltuva
+- [ ] new keyboard v3
+- [ ] atlenkti kelnias kostiumo
+- [ ] motociklo apranga zippers uzdeti
