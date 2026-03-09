@@ -214,7 +214,7 @@ fn run_tui(mut todos: Vec<Todo>) -> io::Result<()> {
 
             // Help bar
             let help = Paragraph::new(
-                " j/k: move | Enter/Space: toggle done | d: delete | a: add | q: quit ",
+                " j/k:move i/o:reorder Enter:toggle d:del a:add q:quit ",
             )
             .style(Style::default().fg(Color::DarkGray));
             f.render_widget(help, chunks[2]);
@@ -289,6 +289,24 @@ fn run_tui(mut todos: Vec<Todo>) -> io::Result<()> {
                                 } else if i >= todos.len() {
                                     list_state.select(Some(todos.len() - 1));
                                 }
+                            }
+                        }
+                    }
+                    KeyCode::Char('i') => {
+                        if let Some(i) = list_state.selected() {
+                            if i > 0 {
+                                todos.swap(i, i - 1);
+                                save_todos(&todos);
+                                list_state.select(Some(i - 1));
+                            }
+                        }
+                    }
+                    KeyCode::Char('o') => {
+                        if let Some(i) = list_state.selected() {
+                            if i + 1 < todos.len() {
+                                todos.swap(i, i + 1);
+                                save_todos(&todos);
+                                list_state.select(Some(i + 1));
                             }
                         }
                     }
