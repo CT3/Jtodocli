@@ -39,13 +39,14 @@ jtodo delete 2
 
 Run `jtodo` with no arguments to launch the interactive interface.
 
-| Key             | Action            |
-|-----------------|-------------------|
-| `j` / `k`      | Move up/down      |
-| `Enter` / `Space` | Toggle done    |
-| `d`            | Delete task        |
-| `a`            | Add new task       |
-| `q` / `Esc`   | Quit               |
+| Key              | Action            |
+|------------------|-------------------|
+| `j` / `k`        | Move up/down      |
+| `i` / `o`        | Reorder task up/down |
+| `Enter` / `Space` | Toggle done      |
+| `d`              | Delete task        |
+| `a`              | Add new task       |
+| `q` / `Esc`     | Quit               |
 
 ### Setup
 
