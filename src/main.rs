@@ -1,12 +1,12 @@
-use std::fs;
-use std::io::{self, stdout};
+use std::fs::{self, File};
+use std::io::{self, BufWriter, Write, stdout};
 use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
 use crossterm::{
-    event::{self, Event, KeyCode, KeyEventKind},
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
     ExecutableCommand,
+    event::{self, Event, KeyCode, KeyEventKind},
+    terminal::{EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode},
 };
 use ratatui::{
     prelude::*,
@@ -96,6 +96,11 @@ impl Todo {
             format!("- [ ] {}", self.text)
         }
     }
+
+    fn write_line(&self, w: &mut impl Write) -> io::Result<()> {
+        let marker = if self.done { 'x' } else { ' ' };
+        write!(w, "- [{}] {}\n", marker, self.text)
+    }
 }
 
 fn load_todos() -> Vec<Todo> {
@@ -123,8 +128,14 @@ fn load_todos() -> Vec<Todo> {
 }
 
 fn save_todos(todos: &[Todo]) {
-    let content: String = todos.iter().map(|t| t.to_line() + "\n").collect();
-    fs::write(todo_path(), content).expect("Failed to write todo file");
+    let path = todo_path();
+    let file = File::create(path).expect("Failed to create todo file");
+    let mut writer = BufWriter::new(file);
+    for todo in todos {
+        todo.write_line(&mut writer)
+            .expect("Failed to write todo line");
+    }
+    writer.flush().expect("Failed to flush todo file");
 }
 
 fn print_todos(todos: &[Todo]) {
@@ -213,10 +224,8 @@ fn run_tui(mut todos: Vec<Todo>) -> io::Result<()> {
             f.render_widget(input, chunks[1]);
 
             // Help bar
-            let help = Paragraph::new(
-                " j/k:move i/o:reorder Enter:toggle d:del a:add q:quit ",
-            )
-            .style(Style::default().fg(Color::DarkGray));
+            let help = Paragraph::new(" j/k:move i/o:reorder Enter:toggle d:del a:add q:quit ")
+                .style(Style::default().fg(Color::DarkGray));
             f.render_widget(help, chunks[2]);
         })?;
 
@@ -230,10 +239,7 @@ fn run_tui(mut todos: Vec<Todo>) -> io::Result<()> {
                     KeyCode::Enter => {
                         let text = input_buf.trim().replace(['\n', '\r'], " ");
                         if !text.is_empty() {
-                            todos.push(Todo {
-                                text,
-                                done: false,
-                            });
+                            todos.push(Todo { text, done: false });
                             save_todos(&todos);
                             if list_state.selected().is_none() {
                                 list_state.select(Some(0));
