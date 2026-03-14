@@ -228,7 +228,7 @@ fn run_tui(mut todos: Vec<Todo>) -> io::Result<()> {
             if input_mode {
                 match key.code {
                     KeyCode::Enter => {
-                        let text = input_buf.trim().to_string();
+                        let text = input_buf.trim().replace(['\n', '\r'], " ");
                         if !text.is_empty() {
                             todos.push(Todo {
                                 text,
@@ -329,7 +329,7 @@ fn main() {
 
     match cli.command {
         Some(Commands::Add { task }) => {
-            let text = task.join(" ");
+            let text = task.join(" ").replace(['\n', '\r'], " ");
             if text.is_empty() {
                 eprintln!("Task description cannot be empty.");
                 std::process::exit(1);
