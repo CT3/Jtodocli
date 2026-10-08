@@ -198,8 +198,10 @@ fn run_tui(mut todos: Vec<Todo>) -> io::Result<()> {
                         .border_style(Style::default().fg(Color::Cyan)),
                 )
                 .highlight_style(
+                    // Set fg too: done items are DarkGray, which vanishes on a DarkGray highlight.
                     Style::default()
                         .bg(Color::DarkGray)
+                        .fg(Color::White)
                         .add_modifier(Modifier::BOLD),
                 )
                 .highlight_symbol("> ");
